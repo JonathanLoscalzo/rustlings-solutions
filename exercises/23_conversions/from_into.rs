@@ -7,6 +7,8 @@
 // Execute `rustlings hint from_into` or use the `hint` watch subcommand for a
 // hint.
 
+use std::{ops::Index, u16, usize};
+
 #[derive(Debug)]
 struct Person {
     name: String,
@@ -40,10 +42,38 @@ impl Default for Person {
 // If while parsing the age, something goes wrong, then return the default of
 // Person Otherwise, then return an instantiated Person object with the results
 
-// I AM NOT DONE
-
 impl From<&str> for Person {
     fn from(s: &str) -> Person {
+        
+        if s == "" {
+            return Person::default();
+        }
+
+        let data = s.split(',').collect::<Vec<&str>>();
+        println!("{:?}", data);
+
+        if data[0] == "" {
+            return Person::default();
+        }
+
+
+        let age = match data.get(1) {
+            Some(age) => {
+                if age.is_empty() || age.parse::<usize>().is_err() {
+                    return Person::default();
+                }
+
+                age.parse::<usize>().unwrap()
+            },
+            None => return Person::default(),
+        };
+
+        // let age: usize = data.get(1).unwrap_or(&"30").parse::<usize>();
+
+        Person {
+            name: String::from(data[0]),
+            age: age,
+        }
     }
 }
 
@@ -134,6 +164,13 @@ mod tests {
     #[test]
     fn test_trailing_comma_and_some_string() {
         let p: Person = Person::from("Mike,32,man");
+        assert_eq!(p.name, "Mike");
+        assert_eq!(p.age, 32);
+    }
+
+    #[test]
+    fn test_trailing_comma_and_some_string_with_into() {
+        let p: Person = "Mike,32,man".into();
         assert_eq!(p.name, "Mike");
         assert_eq!(p.age, 32);
     }

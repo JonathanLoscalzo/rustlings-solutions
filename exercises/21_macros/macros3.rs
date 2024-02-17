@@ -4,9 +4,8 @@
 //
 // Execute `rustlings hint macros3` or use the `hint` watch subcommand for a
 // hint.
-
-// I AM NOT DONE
-
+// https://doc.rust-lang.org/reference/macros-by-example.html#the-macro_use-attribute
+#[macro_use]
 mod macros {
     macro_rules! my_macro {
         () => {

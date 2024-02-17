@@ -11,7 +11,16 @@
 // Execute `rustlings hint iterators5` or use the `hint` watch subcommand for a
 // hint.
 
-// I AM NOT DONE
+// The documentation for the std::iter::Iterator trait contains numerous methods
+// that would be helpful here.
+
+// The collection variable in count_collection_iterator is a slice of HashMaps. It
+// needs to be converted into an iterator in order to use the iterator methods.
+
+// The fold method can be useful in the count_collection_iterator function.
+
+// For a further challenge, consult the documentation for Iterator to find
+// a different method that could make your code more compact than using fold.
 
 use std::collections::HashMap;
 
@@ -35,7 +44,7 @@ fn count_for(map: &HashMap<String, Progress>, value: Progress) -> usize {
 fn count_iterator(map: &HashMap<String, Progress>, value: Progress) -> usize {
     // map is a hashmap with String keys and Progress values.
     // map = { "variables1": Complete, "from_str": None, ... }
-    todo!();
+    map.iter().map(|(s,&v)| v == value).filter(|&x| x == true).count()
 }
 
 fn count_collection_for(collection: &[HashMap<String, Progress>], value: Progress) -> usize {
@@ -54,7 +63,9 @@ fn count_collection_iterator(collection: &[HashMap<String, Progress>], value: Pr
     // collection is a slice of hashmaps.
     // collection = [{ "variables1": Complete, "from_str": None, ... },
     //     { "variables2": Complete, ... }, ... ]
-    todo!();
+
+    // collection.iter().map(|c| count_iterator(c, value)).sum()
+    collection.iter().fold(0, |acc, x| acc + count_iterator(&x, value))
 }
 
 #[cfg(test)]
